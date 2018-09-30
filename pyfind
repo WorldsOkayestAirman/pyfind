@@ -7,26 +7,26 @@ import argparse
 
 
 def find(fileName, startDir, directory):
-    for dirname, dirs, files in os.walk(startDir):
+    for dirpath, dirnames, filenames in os.walk(startDir):
         if directory:
-            if fileName in dirs:
-                return os.path.join(dirname, fileName)
+            if fileName in dirnames:
+                return os.path.join(dirpath, fileName)
 
         else:
-            if fileName in files:
-                return os.path.join(dirname, fileName)
+            if fileName in filenames:
+                return os.path.join(dirpath, fileName)
 
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(prog="pyfind")
-    parser.add_argument("-d","-dir","--directory", action="store_true", help="Search for a directory")
+    parser.add_argument("-d","-dir","--directory", action="store_true", help="Search for a directory instead of a file.")
     parser.add_argument("file", type=str, help="The file/directory to search for.")
     parser.add_argument("-n","--in_dir", default=os.getcwd(), help="The directory to start searching in. \
-                                                 If none provided, the default in the current directory")
+                                                 If none provided, the default is the current directory.")
 
     args = parser.parse_args()
-    path = find(args.file,args.in_dir,args.directory)
-    
+    path = find(args.file, args.in_dir, args.directory)
+
     if path:
         print(path)
     else:
